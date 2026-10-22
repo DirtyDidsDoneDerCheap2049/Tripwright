@@ -101,7 +101,7 @@ docker compose -f docker-compose.yml -f deploy/compose.small.yml ps -a
 
 本地开发、fixture 模式和独立测试库配置见 [开发指南](docs/DEMO-STARTUP.md)。
 
-已有 AI-Guide 部署可按 [更新指南](docs/UPDATE-TRIPWRIGHT.md)升级，仓库地址和数据标识保持兼容，已有旅行可继续使用。
+已有部署的更新步骤见 [部署文档](docs/DEPLOYMENT.md#更新)。更新时保留原有配置和数据卷。
 
 ## 架构
 

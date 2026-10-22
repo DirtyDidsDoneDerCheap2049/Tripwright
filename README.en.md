@@ -74,7 +74,7 @@ Vue 3 and TypeScript provide the UI. FastAPI validates requests, ownership and v
 
 See [architecture](docs/ARCHITECTURE.md) and [local development](docs/DEMO-STARTUP.md) for code entry points and checks.
 
-Existing AI-Guide deployments can follow the [update guide](docs/UPDATE-TRIPWRIGHT.md). The repository URL and persistent data identifiers remain compatible, preserving existing trips.
+For existing deployments, follow the update section in the [deployment guide](docs/DEPLOYMENT.md#更新). Preserve your configuration and data volumes when upgrading.
 
 ## Limitations
 

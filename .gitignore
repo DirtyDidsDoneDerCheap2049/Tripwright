@@ -71,6 +71,9 @@ Thumbs.db
 /docs/AI-Guide产品化改造方案.md
 /docs/CODEX-REVIEW-CHECKLIST.md
 /docs/RELEASE-CHECKLIST.md
+# Personal deployment notes belong under ignored work/private-deploy/.
+/docs/UPDATE-TRIPWRIGHT.md
+/docs/SECURITY-UPDATE-*.md
 /deploy/LOCAL-DRY-RUN.md
 /start-local.ps1
 
