@@ -7,7 +7,7 @@
 # 依赖优先级：backend/requirements.lock.txt > backend/requirements.txt
 # 开发与测试依赖见 docs/DEMO-STARTUP.md；运行镜像使用锁文件。
 
-FROM python:3.13.15-slim-bookworm
+FROM python:3.13.17-slim-bookworm
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -19,9 +19,17 @@ ENV PYTHONUNBUFFERED=1 \
 # 因此不安装 gcc / libmysqlclient 等编译工具链。
 WORKDIR /app
 
+# 宿主机升级不会更新容器；要求 Bookworm 的 CA 撤销修复已安装。
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends ca-certificates; \
+    dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge '20250419~deb12u2'; \
+    rm -rf /var/lib/apt/lists/*
+
 # 先装依赖再拷代码，代码改动不会让依赖层缓存失效。
 COPY backend/requirements*.txt /app/
 RUN set -eux; \
+    python -m pip install --no-cache-dir --no-deps -r /app/requirements-bootstrap.txt; \
     if [ -f /app/requirements.lock.txt ]; then \
         echo "install from locked requirements: requirements.lock.txt"; \
         pip install --no-cache-dir -r /app/requirements.lock.txt; \
@@ -34,6 +42,9 @@ RUN set -eux; \
 COPY backend/app /app/app
 COPY backend/migrations /app/migrations
 COPY backend/alembic.ini /app/alembic.ini
+
+# 同时检查应用、pip 自带及系统证书库，失败则不产出镜像。
+RUN python -m app.tls_audit --system
 
 # 非 root 运行；媒体目录与容器内统一路径一致（compose 里 MEDIA_ROOT=/var/lib/ai-guide/media）。
 RUN set -eux; \
